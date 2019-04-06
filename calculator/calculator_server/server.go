@@ -12,11 +12,12 @@ import (
 type server struct{}
 
 func (*server) Sum(ctx context.Context, req *calculatorpb.SumRequest) (*calculatorpb.SumResponse, error){
+	fmt.Printf("Received Sum RPC: %v\n", req)
 	n1 := req.GetFirstNumber()
 	n2 := req.GetSecondNumber()
 	result := n1 + n2
 	res := &calculatorpb.SumResponse{
-		SumResult:result,
+		SumResult: result,
 	}
 	return res, nil
 }
@@ -29,5 +30,6 @@ func main(){
 	}
 	s := grpc.NewServer()
 	calculatorpb.RegisterCalculatorServiceServer(s, &server{})
+
 	s.Serve(listen)
 }
