@@ -8,6 +8,7 @@ import (
 	"grpc-go-course/greet/greetpb"
 	"strconv"
 	"time"
+	"io"
 )
 
 type server struct{}
@@ -35,6 +36,26 @@ func (*server) GreetManyTimes(req *greetpb.GreetManyTimesRequest,
 			time.Sleep(3 * time.Second)
 	}
 	return nil
+}
+
+func (*server)LongGreet(stream greetpb.GreetService_LongGreetServer) error{
+	fmt.Println("LongGreet func was invoked with a streaminbg request")
+	result := ""
+	for{
+		req, err := stream.Recv()
+		if err == io.EOF{
+			// we have finished reading the client stream
+			//break
+			return stream.SendAndClose(&greetpb.LongGreetResponse{
+				Result: result,
+			})
+		}
+		if err != nil{
+			log.Fatalf("error while reading client stream: %v", err)
+		}
+		firstName := req.GetGreeting().GetFirstName()
+		result +="hello " + firstName + "!"
+	}
 }
 
 func main(){
