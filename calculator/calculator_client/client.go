@@ -22,6 +22,19 @@ func main() {
 	doClientStreaming(c)
 }
 
+func doUnary(c calculatorpb.CalculatorServiceClient){
+	fmt.Println("start to do a Unary RPC...")
+	req := &calculatorpb.SumRequest{
+		FirstNumber: 10,
+		SecondNumber: 20,
+	}
+	rep, err := c.Sum(context.Background(), req)
+	if err != nil{
+		log.Fatalf("err %v", err)
+	}
+	fmt.Println(rep.SumResult)
+}
+
 func doSeverStreaming(c calculatorpb.CalculatorServiceClient){
 	fmt.Println("start to do a Server Streaming RPC...")
 	req := &calculatorpb.PrimeNumberDecompositionRequest{
@@ -42,19 +55,6 @@ func doSeverStreaming(c calculatorpb.CalculatorServiceClient){
 		}
 		log.Printf("Response from Decomposition: %v\n", msg.GetResult())
 	}
-}
-
-func doUnary(c calculatorpb.CalculatorServiceClient){
-	fmt.Println("start to do a Unary RPC...")
-	req := &calculatorpb.SumRequest{
-		FirstNumber: 10,
-		SecondNumber: 20,
-	}
-	rep, err := c.Sum(context.Background(), req)
-	if err != nil{
-		log.Fatalf("err %v", err)
-	}
-	fmt.Println(rep.SumResult)
 }
 
 func doClientStreaming(c calculatorpb.CalculatorServiceClient){
