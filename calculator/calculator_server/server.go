@@ -8,6 +8,7 @@ import (
 	"context"
 	"fmt"
 	"time"
+	"io"
 )
 
 type server struct{}
@@ -45,6 +46,24 @@ func (*server) PrimeNumberDecomposition(req *calculatorpb.PrimeNumberDecompositi
 		}
 	}
 	return nil
+}
+
+func (*server) ComputeAverage(stream calculatorpb.CalculatorService_ComputeAverageServer) error{
+	var count, sum int32
+	for {
+		req, err := stream.Recv()
+
+		if err == io.EOF{
+			return stream.SendAndClose(&calculatorpb.ComputeAverageResponse{
+				AverageNumber: sum / count,
+			})
+		}
+		if err != nil{
+			log.Fatalf("error while stream.Recv %v\n", err)
+		}
+		sum += req.GetInputNumber()
+		count += 1
+	}
 }
 
 func main(){
