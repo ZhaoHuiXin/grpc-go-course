@@ -1,0 +1,153 @@
+<p>This course assumes you already know Golang. But in case you need to have the same setup as me, perform step 1, 2 &amp; 3. Otherwise, just perform step 3.  </p>
+
+<h4>1) Go Setup</h4>
+
+
+
+<p>Instructions to install Golang are here: <a href="https://golang.org/doc/install" rel="nofollow" target="_blank">https://golang.org/doc/install</a></p>
+
+
+
+<p>Make sure that the go binaries are in your <code>PATH</code>  (see installation instructions), so that you can run the following command in a terminal:</p>
+
+<pre class="prettyprint linenums">go version
+(returns: go version go1.10 darwin/amd64 or different version)</pre>
+
+
+
+<p><br></p>
+
+
+
+<h4>2) VSCode Setup</h4><p><strong>You are free to use a text editor of your choice, but in this course I will use VSCode. 
+</strong><em>It is not necessary to have the same text editor as me to complete the course. </em></p>
+
+<p>=========== Instructions for VSCode ==========<br></p>
+
+<p>1. Install VSCode: <a href="https://code.visualstudio.com/" rel="nofollow" target="_blank">https://code.visualstudio.com/</a></p>
+
+<p>2. Install VSCode extensions (<a href="https://code.visualstudio.com/docs/editor/extension-gallery#_browse-and-install-extensions" rel="nofollow" target="_blank">https://code.visualstudio.com/docs/editor/extension-gallery#_browse-and-install-extensions</a>):<code>vscode-proto3</code>  &amp; <code>Clang-Format</code>  (if you want to format your files automatically)</p>
+
+<p>3. Install Clang-Format (if you want to format your files automatically):</p>
+
+<ul><li>MacOSX: <code>brew install clang-format</code> </li><li>Windows / Ubuntu: See <a href="http://www.codepool.biz/vscode-format-c-code-windows-linux.html" rel="nofollow" target="_blank">http://www.codepool.biz/vscode-format-c-code-windows-linux.html</a></li></ul>
+
+<p>4. Install protoc (see below)</p><p><br></p>
+
+
+
+<h4>3) Protoc Setup</h4>
+
+
+
+<p>In order to perform code generation, you will need to install <code>protoc</code>  on your computer.</p>
+
+
+
+<p>============ MacOSX =============</p>
+
+
+
+
+
+<p>It is actually very easy, open a command line interface and type <code>brew install protobuf</code> </p>
+
+
+
+
+
+<p>============ Ubuntu (Linux) ============</p>
+
+
+
+
+
+<p>Find the correct protocol buffers version based on your Linux Distro: <a href="https://github.com/google/protobuf/releases" rel="nofollow" target="_blank">https://github.com/google/protobuf/releases</a></p>
+
+
+
+
+
+<p>Example with x64:</p>
+
+
+
+
+
+<pre class="prettyprint linenums"># Make sure you grab the latest version
+curl -OL https://github.com/google/protobuf/releases/download/v3.5.1/protoc-3.5.1-linux-x86_64.zip
+# Unzip
+unzip protoc-3.5.1-linux-x86_64.zip -d protoc3
+# Move protoc to /usr/local/bin/
+sudo mv protoc3/bin/* /usr/local/bin/
+# Move protoc3/include to /usr/local/include/
+sudo mv protoc3/include/* /usr/local/include/
+# Optional: change owner
+sudo chown [user] /usr/local/bin/protoc
+sudo chown -R [user] /usr/local/include/google</pre>
+
+
+
+
+
+
+
+
+
+<p>============ Windows ============</p>
+
+
+
+
+
+<p>Download the windows archive: <a href="https://github.com/google/protobuf/releases" rel="nofollow" target="_blank">https://github.com/google/protobuf/releases</a></p>
+
+
+
+
+
+<p>Example: <a href="https://github.com/google/protobuf/releases/download/v3.5.1/protoc-3.5.1-win32.zip" rel="nofollow" target="_blank">https://github.com/google/protobuf/releases/download/v3.5.1/protoc-3.5.1-win32.zip</a></p>
+
+
+
+
+
+<p>Extract all to <code>C:\proto3</code>  </p>
+
+
+
+
+
+<p>Your directory structure should now be</p>
+
+
+
+
+
+<p><code>C:\proto3\bin</code> 
+</p>
+
+
+
+
+
+<p><code>C:\proto3\include</code> 
+</p>
+
+
+
+
+
+<p>Finally, add C:\proto3\bin to your PATH:</p>
+
+
+
+
+
+<ol><li>From the desktop, right-click My Computer and click Properties.</li><li>In the System Properties window, click on the Advanced tab</li><li>In the Advanced section, click the Environment Variables button.</li><li><p>Finally, in the Environment Variables window (as shown below), highlight the Path variable in the Systems Variable section and click the Edit button. Add or modify the path lines with the paths you wish the computer to access. Each different directory is separated with a semicolon as shown below.</p><blockquote>C:\Program Files; C:\Winnt; ...... <strong>; C:\proto3\bin</strong></blockquote></li></ol>
+
+
+
+
+
+<p>(you need to add <code>; C:\proto3\bin</code>  at the end)</p>
