@@ -7,6 +7,7 @@ import (
 	"grpc-go-course/calculator/calculatorpb"
 	"context"
 	"fmt"
+	"time"
 )
 
 type server struct{}
@@ -20,6 +21,30 @@ func (*server) Sum(ctx context.Context, req *calculatorpb.SumRequest) (*calculat
 		SumResult: result,
 	}
 	return res, nil
+}
+
+func (*server) PrimeNumberDecomposition(req *calculatorpb.PrimeNumberDecompositionRequest,
+	stream calculatorpb.CalculatorService_PrimeNumberDecompositionServer) error{
+		// or directly call req.PrimeNumber
+	primeNumber := req.GetPrimeNumber()
+	var k int32 = 2
+	for primeNumber > 1{
+		if primeNumber % k == 0{
+			result := &calculatorpb.PrimeNumberDecompositionResponse{
+				Result: k,
+			}
+			fmt.Println(k)
+			err := stream.Send(result)
+			time.Sleep(3 * time.Second)
+			if err != nil{
+				log.Fatalf("error while send result %v", err)
+			}
+			primeNumber = primeNumber / k
+		}else{
+			k += 1
+		}
+	}
+	return nil
 }
 
 func main(){

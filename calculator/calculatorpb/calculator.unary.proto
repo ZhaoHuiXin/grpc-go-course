@@ -10,17 +10,9 @@ message SumRequest{
 
 message SumResponse{
     int32 sum_result = 1;
-}
 
-message PrimeNumberDecompositionRequest{
-    int32 prime_number = 1;
-}
-
-message PrimeNumberDecompositionResponse{
-    int32 result = 1;
 }
 
 service CalculatorService{
     rpc Sum(SumRequest) returns (SumResponse){};
-    rpc PrimeNumberDecomposition(PrimeNumberDecompositionRequest) returns (stream PrimeNumberDecompositionResponse){};
 }
