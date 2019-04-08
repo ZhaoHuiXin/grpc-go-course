@@ -146,7 +146,7 @@ func doBiDiStreaming(c greetpb.GreetServiceClient){
 		},
 	}
 	// we create a stream by invoking the client
-	stream, err := c.GreetEveryone(context.TODO())
+	stream, err := c.GreetEveryone(context.Background())
 	if err != nil{
 		log.Fatalf("error while GreetEveryone %v\n", err)
 		return

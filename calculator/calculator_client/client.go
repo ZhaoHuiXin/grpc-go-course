@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"time"
 )
 
 func main() {
@@ -19,7 +20,8 @@ func main() {
 
 	//doUnary(c)
 	//doSeverStreaming(c)
-	doClientStreaming(c)
+	//doClientStreaming(c)
+	doBiDiStreaming(c)
 }
 
 func doUnary(c calculatorpb.CalculatorServiceClient){
@@ -86,4 +88,43 @@ func doClientStreaming(c calculatorpb.CalculatorServiceClient){
 	}else{
 		log.Printf("ComputeAverage Response: %v\n", res.GetAverageNumber())
 	}
+}
+
+func doBiDiStreaming(c calculatorpb.CalculatorServiceClient){
+	stream, err := c.FindMaximum(context.Background())
+	if err != nil{
+		log.Fatalf("error while create FindMaxNumber Client %v\n", err)
+		return
+	}
+	dataSend := []int32{1,5,3,6,2,20}
+	waitc := make(chan struct{}) // wait channel
+
+	// function to send a bunch of messages
+	go func() {
+		for _, n := range dataSend{
+			stream.Send(&calculatorpb.FindMaximumRequest{
+				InputNumber: n,
+			})
+			time.Sleep(1 * time.Second)
+		}
+		stream.CloseSend()
+	}()
+
+	// function to receive a bunch of messages
+	go func() {
+		for {
+			res, err := stream.Recv()
+			if err == io.EOF{
+				break
+			}
+			if err != nil{
+				log.Fatalf("error while client stream Recv %v\n", err)
+				break
+			}
+			fmt.Printf("now the MaxNumber is: %v\n", res.GetResult())
+		}
+		close(waitc)
+	}()
+
+	<- waitc
 }

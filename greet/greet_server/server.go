@@ -70,6 +70,7 @@ func (*server)GreetEveryone(stream greetpb.GreetService_GreetEveryoneServer) err
 			log.Fatalf("error when Recv %v\n", err)
 		}
 		firstName := req.GetGreeting().GetFirstName()
+		log.Printf("first name is: %v\n", firstName)
 		if firstName == "lucy"{
 			result := "Welcome back " + firstName + ", my lord! "
 			stream.Send(&greetpb.GreetEveryoneResponse{

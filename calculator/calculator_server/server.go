@@ -3,7 +3,7 @@ package main
 import (
 	"google.golang.org/grpc"
 	"net"
-	"github.com/prometheus/common/log"
+	"log"
 	"grpc-go-course/calculator/calculatorpb"
 	"context"
 	"fmt"
@@ -64,6 +64,27 @@ func (*server) ComputeAverage(stream calculatorpb.CalculatorService_ComputeAvera
 		sum += req.GetInputNumber()
 		count += 1
 	}
+}
+
+func (*server) FindMaximum( stream calculatorpb.CalculatorService_FindMaximumServer) error{
+	maxNum := int32(0)
+	for {
+		req, err := stream.Recv()
+		if err == io.EOF{
+			break
+		}
+		if err != nil{
+			log.Fatalf("error while FindMaximum server Recv %v\n", err)
+		}
+		log.Printf("Server receive number: %v\n", req.GetInputNumber())
+		if  req.GetInputNumber() > maxNum{
+			maxNum = req.GetInputNumber()
+			stream.Send(&calculatorpb.FindMaximumResponse{
+				Result: maxNum,
+			})
+		}
+	}
+	return nil
 }
 
 func main(){
